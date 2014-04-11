@@ -35,7 +35,6 @@ public class AlServer
 		}
 	}
 */
-	
 	public static void main(String args[])
 	{
 		
@@ -61,11 +60,10 @@ public class AlServer
 		InputStream inSteram = cSocket.getInputStream();
 		OutputStream outStraem = cSocket.getOutputStream();
 		
-		//отправляем сообщение на обработку и получаем карту данных сообщения
-		Map<String, String> mapData =  dataProcessing.clientMessage(inSteram);
+		//отправляем сообщение на обработку
+		//dataProcessing.clientMessage(inSteram);	
 		
-		
-		
+		System.out.println(dataProcessing.clientMessage(inSteram));
 		}catch(IOException e)
 		{
 			e.getMessage();

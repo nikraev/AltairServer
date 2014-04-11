@@ -11,23 +11,41 @@ import org.w3c.dom.NodeList;
 
 public class AlProtocol
 {
-/*	
-	private boolean state;
-
+	private String remedyLoginID; 
+	
 	AlProtocol()
 	{
-		state = false;
+
 	}
-*/	
-	public Map<String, String> clientMessage(InputStream inStream)
+	
+	public String clientMessage(InputStream inStream)
+	{
+		//получаем параметры входящего сообщения
+		Map<String, String> data = this.parseMessage(inStream);
+		RemedyProcessing remProc  = new  RemedyProcessing();
+		
+		if(remedyLoginID.isEmpty())
+		{
+			this.remedyLoginID = remProc.checkAuth(data.get(1),data.get(2));
+			if(remedyLoginID.isEmpty())
+			{
+				return "Authentication fail! Login or password incorrect!";
+			}
+		}
+			
+		return "Successfully";	
+	}
+	
+	
+	//Парсим входящее сообщение получая из него map  т.к. с ним удобнее работать
+	private Map<String, String> parseMessage(InputStream inStream)
 	{
 		DocumentBuilderFactory factory =  DocumentBuilderFactory.newInstance();
 		
 		Map<String, String> mapData = new HashMap<String, String>();  
 		
 		try{
-			//создаём класс отправки сообщений
-			RemedyProcessing remProc = new RemedyProcessing(); 
+			 
 			//Создаём фабрику
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			
@@ -36,24 +54,12 @@ public class AlProtocol
 			//Получаем первый элемент авторизации
 			
 			//Получаем элементы аутентификации
-			Element auth = doc.getDocumentElement();
-			NodeList authnodes = auth.getChildNodes();
+			Element element = doc.getDocumentElement();
+			NodeList dataNodes = element.getChildNodes();
 			
-			if(authnodes.getLength() != 2)
-			{
-				System.out.println("To more auth parameter");
-			}
-			else
-			{
-				remProc.checkAuth(authnodes.item(0).getTextContent() , authnodes.item(1).getTextContent());
-			}
-			
-			Element data = doc.getDocumentElement();
-			NodeList datanodes = data.getChildNodes();
-			
-			for(int i = 0, N = datanodes.getLength(); i < N; i++)
+			for(int i = 0, N = dataNodes.getLength(); i < N; i++)
 				{
-					mapData.put(datanodes.item(i).getNodeName(), datanodes.item(i).getNodeValue());
+					mapData.put(dataNodes.item(i).getNodeName(), dataNodes.item(i).getNodeValue());
 				}
 			
 			return mapData;
@@ -65,4 +71,5 @@ public class AlProtocol
 		
 		return mapData;
 	}
+	
 }
