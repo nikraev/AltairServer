@@ -64,6 +64,7 @@ public class AlServer
 		//dataProcessing.clientMessage(inSteram);	
 		
 		System.out.println(dataProcessing.clientMessage(inSteram));
+		sSocket.close();
 		}catch(IOException e)
 		{
 			e.getMessage();

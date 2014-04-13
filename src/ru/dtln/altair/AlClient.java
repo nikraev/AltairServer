@@ -27,6 +27,7 @@ public class AlClient
 		Socket sSocket = new Socket(InetAddress.getByAddress(addr), sPort);
 		System.out.println("Socket connection!");
 		
+		System.out.println("Main function!");
 		//получаем входящий и исходящий поток
 		InputStream sInput = sSocket.getInputStream();
 		OutputStream sOutput = sSocket.getOutputStream();
@@ -34,7 +35,9 @@ public class AlClient
 		//formMessage();
 		//формирование xml
 		
-		this.createMessage();
+		AlClient client = new AlClient();
+		client.createMessage();
+		//this.createMessage();
 		
 		
 		}catch(Exception e)
@@ -43,11 +46,12 @@ public class AlClient
 		}
 	}
 	
-	private String createMessage()
+	private void createMessage()
 	{
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+		System.out.println("Start");
+		try{
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-		
 		Document doc = docBuilder.newDocument();
 		Element message = doc.createElement("message");
 		doc.appendChild(message);
@@ -55,10 +59,22 @@ public class AlClient
 		Element authentication = doc.createElement("authentication");
 		message.appendChild(authentication);
 		
+		Element login = doc.createElement("login");
+		authentication.appendChild(login);
+		
 		Element password = doc.createElement("password");
-		rootElement.appendChild(password);
+		authentication.appendChild(password);
+		
+		login.setAttribute("example", "example1");
+		password.setAttribute("exemple2", "exemple3");
+		
+		System.out.println(login.getAttribute("example"));
+		
+		} catch (ParserConfigurationException e) {
+		e.printStackTrace();
+		}
 		
 		
-		return "f";	
+		
 	}
 }

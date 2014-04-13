@@ -38,7 +38,7 @@ public class CheckConfig{
 		port = p;
 		return port;
 	}
-	
+/*	
 	private void initConf()
 	{
 		Properties pconf = new Properties();
@@ -72,5 +72,5 @@ public class CheckConfig{
         	}
         }
 	}
-	
+*/
 }
